@@ -196,10 +196,10 @@ void Camera::Move(GLbyte key, GLfloat deltaTime)
 {
 	switch (key)
 	{
-	case KEY_MOVE_FORWORD: 
+	case KEY_MOVE_FORWARD: 
 		MoveForward(deltaTime) ; 
 		break;
-	case KEY_MOVE_BACKWORD: 
+	case KEY_MOVE_BACKWARD: 
 		MoveBackward(deltaTime) ; 
 		break;
 	case KEY_MOVE_LEFT: 

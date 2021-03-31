@@ -14,8 +14,10 @@ void Sprite2D::CaculateWorldMatrix()
 	Matrix m_Sc, m_T, m_R;
 	m_Sc.SetScale(m_Vec3Scale);
 	m_T.SetTranslation(m_Vec3Position);
-	m_R.SetRotationZ(m_Vec3Rotation.z * PI);
-	m_WorldMat = m_Sc * m_T * m_R;
+
+	GLfloat tempZ = (GLfloat)(m_Vec3Rotation.z * PI * -2 / MAX_DEGREE);
+	m_R.SetRotationZ(tempZ);
+	m_WorldMat = m_Sc * m_R * m_T;
 }
 
 Sprite2D::Sprite2D(std::shared_ptr<Models> model, std::shared_ptr<Shaders> shader, std::shared_ptr<Texture> texture)
@@ -169,6 +171,25 @@ void Sprite2D::Set2DRotation(GLfloat z)
 GLfloat Sprite2D::GetZRotation()
 {
 	return m_Vec3Rotation.z;
+}
+
+void Sprite2D::LookAt2D(GLfloat x, GLfloat y)
+{
+	Vector2 target = Vector2(x, y);
+	Vector2 currentPos = Get2DPosition();
+	Vector2 dir = target - currentPos;
+
+	//user clicks to the left of the player; use of m_iHeight is to make sure that the image isnt already flipped
+	if (dir.x < 0 && m_iHeight > 0) {
+		SetSize(m_iWidth, -m_iHeight);
+	}
+	//user clicks to the right of the player
+	else if (dir.x > 0 && m_iHeight < 0) {
+		SetSize(m_iWidth, -m_iHeight);
+	}
+
+	Set2DRotation((-atan2(dir.x, dir.y) * 180 / PI) + 90);
+
 }
 
 Vector2 Sprite2D::Get2DPosition()

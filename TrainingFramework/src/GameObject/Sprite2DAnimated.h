@@ -10,7 +10,7 @@ protected:
     float m_frameTime;
     float m_currentTime;
 public:
-    Sprite2DAnimated(std::shared_ptr<Models> model, std::shared_ptr<Shaders> shader, std::shared_ptr<Texture> texture);
+    //Sprite2DAnimated(std::shared_ptr<Models> model, std::shared_ptr<Shaders> shader, std::shared_ptr<Texture> texture);
     Sprite2DAnimated(std::shared_ptr<Models> model, std::shared_ptr<Shaders> shader, std::shared_ptr<Texture> texture, float numFrames, float frameTime);
     ~Sprite2DAnimated();
 

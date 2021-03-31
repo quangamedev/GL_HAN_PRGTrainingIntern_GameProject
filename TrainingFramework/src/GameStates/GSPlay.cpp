@@ -10,6 +10,7 @@
 #include "Text.h"
 #include "GameButton.h"
 #include "Sprite2DAnimated.h"
+#include "Player.h"
 
 extern int screenWidth; //need get on Graphic engine
 extern int screenHeight; //need get on Graphic engine
@@ -55,9 +56,9 @@ void GSPlay::Init()
 
 	//player
 	model = ResourceManagers::GetInstance()->GetModel("Sprite2D");
-	texture = ResourceManagers::GetInstance()->GetTexture("Grass");
+	texture = ResourceManagers::GetInstance()->GetTexture("sPlayerIdle_strip4");
 	shader = ResourceManagers::GetInstance()->GetShader("AnimationShader");
-	m_player = std::make_shared<Sprite2DAnimated>(model, shader, texture, 4.0, 0.1);
+	m_player = std::make_shared<Player>(model, shader, texture, 4.0, 0.1);
 	m_player->Set2DPosition(m_BackgroundMap->Get2DPosition());
 	m_player->SetSize(50, 50);
 
@@ -94,10 +95,8 @@ void GSPlay::HandleKeyEvents(int key, bool bIsPressed)
 {
 	switch (key)
 	{
-	case KEY_MOVE_RIGHT:
-		m_player->Set2DRotation(m_player->GetZRotation() + 30);
-		std::cout << m_player->GetZRotation() << std::endl;
-		std::cout << m_player->Get2DPosition().x << " " << m_player->Get2DPosition().y << std::endl;
+	case KEY_MOVE_RIGHT || KEY_MOVE_LEFT || KEY_MOVE_FORWARD || KEY_MOVE_BACKWARD:
+		
 		break;
 	default:
 		break;

@@ -88,8 +88,8 @@
 #define KEY_DOWN				40	// key |
 #define KEY_MOVE_LEFT			65	// key a
 #define KEY_MOVE_RIGHT			68	// key d
-#define KEY_MOVE_FORWORD		87	// key w
-#define KEY_MOVE_BACKWORD		83	// key s
+#define KEY_MOVE_FORWARD		87	// key w
+#define KEY_MOVE_BACKWARD		83	// key s
 
 #elif ANDROID
 
@@ -100,7 +100,7 @@
 #define KEY_DOWN				40	// key |
 #define KEY_MOVE_LEFT			65	// key a
 #define KEY_MOVE_RIGHT			68	// key d
-#define KEY_MOVE_FORWORD		87	// key w
-#define KEY_MOVE_BACKWORD		83	// key s
+#define KEY_MOVE_FORWARD		87	// key w
+#define KEY_MOVE_BACKWARD		83	// key s
 
 #endif

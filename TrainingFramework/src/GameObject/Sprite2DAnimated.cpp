@@ -4,9 +4,9 @@
 #include "Camera.h"
 #include "Texture.h"
 
-Sprite2DAnimated::Sprite2DAnimated(std::shared_ptr<Models> model, std::shared_ptr<Shaders> shader, std::shared_ptr<Texture> texture) : Sprite2D(model, shader, texture)
-{
-}
+//Sprite2DAnimated::Sprite2DAnimated(std::shared_ptr<Models> model, std::shared_ptr<Shaders> shader, std::shared_ptr<Texture> texture) : Sprite2D(model, shader, texture)
+//{
+//}
 
 Sprite2DAnimated::Sprite2DAnimated(std::shared_ptr<Models> model, std::shared_ptr<Shaders> shader, std::shared_ptr<Texture> texture, float numFrames, float frameTime) : Sprite2D(model, shader, texture)
 {
