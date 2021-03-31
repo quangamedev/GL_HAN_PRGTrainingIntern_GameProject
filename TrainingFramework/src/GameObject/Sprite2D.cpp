@@ -161,6 +161,18 @@ void Sprite2D::Set2DPosition(Vector2 pos)
 	CaculateWorldMatrix();
 }
 
+void Sprite2D::MoveTo2DPosition(GLfloat x, GLfloat y)
+{
+
+}
+
+void Sprite2D::MoveInDirection2D(Vector2 dir, float speed, GLfloat deltaTime)
+{
+	Vector2 tempDir = dir.Normalize();
+
+	Set2DPosition(Get2DPosition().x + tempDir.x * speed * deltaTime, Get2DPosition().y + tempDir.y * speed * deltaTime);
+}
+
 void Sprite2D::Set2DRotation(GLfloat z)
 {
 	m_Vec3Rotation = Vector3(m_Vec3Rotation.x, m_Vec3Rotation.y, z);

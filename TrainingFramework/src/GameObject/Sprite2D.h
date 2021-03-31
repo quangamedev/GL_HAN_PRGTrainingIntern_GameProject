@@ -25,7 +25,8 @@ public:
 
 	void		Set2DPosition(GLfloat x, GLfloat y);
 	void		Set2DPosition(Vector2 pos);
-	void		MoveWithDirection2D(Vector2 dir, float speed, GLfloat deltaTime);
+	void		MoveTo2DPosition(GLfloat x, GLfloat y);
+	void		MoveInDirection2D(Vector2 dir, float speed, GLfloat deltaTime);
 
 	void		Set2DRotation(GLfloat z);
 	GLfloat		GetZRotation();

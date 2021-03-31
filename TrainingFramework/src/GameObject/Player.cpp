@@ -19,6 +19,8 @@ void Player::Update(GLfloat deltatime)
 	if (KEY_MOVE_RIGHT) {
 		//Set2DPosition(Get2DPosition().x + m_Speed * deltatime, Get2DPosition().y);
 	}
+
+	MoveInDirection2D(Vector2(1,1), 20, deltatime);
 }
 
 void Player::Move(GLbyte key, GLfloat deltaTime)

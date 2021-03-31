@@ -7,6 +7,7 @@ private:
     int m_Health;
     int m_Speed;
     int m_Score;
+    
 public:
     Player(std::shared_ptr<Models> model, std::shared_ptr<Shaders> shader, std::shared_ptr<Texture> texture, float numFrames, float frameTime);
     ~Player();
@@ -16,5 +17,7 @@ public:
 
     void Update(GLfloat deltatime) override;
     void Move(GLbyte key, GLfloat deltaTime);
+
+    //void SetIsMoving
 };
 
