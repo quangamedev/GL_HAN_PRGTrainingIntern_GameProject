@@ -168,9 +168,12 @@ void Sprite2D::MoveTo2DPosition(GLfloat x, GLfloat y)
 
 void Sprite2D::MoveInDirection2D(Vector2 dir, float speed, GLfloat deltaTime)
 {
-	Vector2 tempDir = dir.Normalize();
+	if (dir.x != 0 || dir.y != 0) {
 
-	Set2DPosition(Get2DPosition().x + tempDir.x * speed * deltaTime, Get2DPosition().y + tempDir.y * speed * deltaTime);
+		Vector2 tempDir = dir.Normalize();
+
+		Set2DPosition(Get2DPosition().x + tempDir.x * speed * deltaTime, Get2DPosition().y + tempDir.y * speed * deltaTime);
+	}
 }
 
 void Sprite2D::Set2DRotation(GLfloat z)

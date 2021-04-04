@@ -7,6 +7,7 @@ class Sprite2DAnimated;
 class Text;
 class GameButton;
 class Player;
+class Gun;
 
 class GSPlay :
 	public GameStateBase
@@ -35,8 +36,9 @@ private:
 
 	std::shared_ptr<Sprite2D> m_BackgroundWall;
 	std::shared_ptr<Sprite2D> m_BackgroundMap;
-	std::shared_ptr<Text>  m_score;
-	std::shared_ptr<Player> m_player;
+	std::shared_ptr<Text>  m_Score;
+	std::shared_ptr<Player> m_Player;
+	std::shared_ptr<Gun> m_Gun;
 
 	std::list<std::shared_ptr<GameButton>>	m_listButton;
 
