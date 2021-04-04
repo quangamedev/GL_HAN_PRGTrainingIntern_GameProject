@@ -27,7 +27,7 @@ void Player::ChangeState(PlayerState state)
 	switch (m_State)
 	{
 	case Player::idle:
-		//range from 0-6 perhaps
+		//range from 0-3 perhaps
 		m_FirstFrame = 0;
 		m_LastFrame = 3;
 		break;

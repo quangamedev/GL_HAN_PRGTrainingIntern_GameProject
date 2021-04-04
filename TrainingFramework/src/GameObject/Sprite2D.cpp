@@ -176,6 +176,16 @@ void Sprite2D::MoveInDirection2D(Vector2 dir, float speed, GLfloat deltaTime)
 	}
 }
 
+void Sprite2D::MoveInDirection2D(GLfloat tarX, GLfloat tarY, float speed, GLfloat deltaTime)
+{
+	if ((tarX - Get2DPosition().x) != 0 || (tarY - Get2DPosition().y) != 0) {
+
+		Vector2 tempDir = Vector2(tarX - Get2DPosition().x, tarY - Get2DPosition().y).Normalize();
+
+		Set2DPosition(Get2DPosition().x + tempDir.x * speed * deltaTime, Get2DPosition().y + tempDir.y * speed * deltaTime);
+	}
+}
+
 void Sprite2D::Set2DRotation(GLfloat z)
 {
 	m_Vec3Rotation = Vector3(m_Vec3Rotation.x, m_Vec3Rotation.y, z);
