@@ -7,6 +7,7 @@ Bullet::Bullet(std::shared_ptr<Models> model, std::shared_ptr<Shaders> shader, s
 	m_BulletSpeed = 400.0f;
 	///std::cout << "x: " << tarX << "y: " << tarY << std::endl;
 	m_MovementDirection = Vector2(0, 0);
+	m_CollisionRadius = 40;
 }
 
 Bullet::~Bullet()

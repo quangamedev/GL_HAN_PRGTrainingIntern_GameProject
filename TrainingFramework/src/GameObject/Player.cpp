@@ -8,6 +8,7 @@ Player::Player(std::shared_ptr<Models> model, std::shared_ptr<Shaders> shader, s
 	m_MovementDir = Vector2(0, 0);
 	m_FirstFrame = 0;
 	m_LastFrame = numFrames - 1;
+	m_CollisionRadius = 70;
 	ChangeState(PlayerState::idle);
 }
 

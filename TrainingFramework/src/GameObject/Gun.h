@@ -19,6 +19,8 @@ public:
     void Update(GLfloat deltaTime) override;
     void Draw() override;
     void Fire(GLfloat x, GLfloat y);
+
+    std::list<std::shared_ptr<Bullet>> GetBulletsList() { return m_listBullet; }
 private:
     std::shared_ptr<Models> m_Model;
     std::shared_ptr<Shaders> m_Shader;

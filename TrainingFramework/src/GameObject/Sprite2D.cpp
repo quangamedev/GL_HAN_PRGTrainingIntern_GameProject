@@ -32,6 +32,8 @@ Sprite2D::Sprite2D(std::shared_ptr<Models> model, std::shared_ptr<Shaders> shade
 	m_iHeight = 50;
 	m_iWidth = 100;
 	m_Vec3Scale = Vector3((float)m_iWidth / screenWidth, (float)m_iHeight / screenHeight, 1);
+
+	m_CollisionRadius = 0;
 }
 
 Sprite2D::Sprite2D(std::shared_ptr<Models> model, std::shared_ptr<Shaders> shader, Vector4 color)
@@ -161,9 +163,15 @@ void Sprite2D::Set2DPosition(Vector2 pos)
 	CaculateWorldMatrix();
 }
 
-void Sprite2D::MoveTo2DPosition(GLfloat x, GLfloat y)
+bool Sprite2D::MoveTo2DPosition(GLfloat x, GLfloat y, float speed, GLfloat deltaTime)
 {
-
+	if (Get2DPosition().x - x == 0 && Get2DPosition().y - y == 0)
+		return true;
+	
+	Vector2 tempDir = Vector2(x, y).Normalize();
+	Set2DPosition(Get2DPosition().x + tempDir.x * speed * deltaTime, Get2DPosition().y + tempDir.y * speed * deltaTime);
+	return false;
+	
 }
 
 void Sprite2D::MoveInDirection2D(Vector2 dir, float speed, GLfloat deltaTime)
@@ -219,4 +227,9 @@ void Sprite2D::SetSize(GLint width, GLint height)
 	m_iHeight = height;
 	m_Vec3Scale = Vector3((float)m_iWidth / screenWidth, (float)m_iHeight / screenHeight, 1);
 	CaculateWorldMatrix();
+}
+
+GLfloat Sprite2D::GetCollisionRadius()
+{
+	return m_CollisionRadius;
 }

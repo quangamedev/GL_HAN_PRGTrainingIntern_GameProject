@@ -112,7 +112,7 @@ void ResourceManagers::AddSound(const std::string& name, bool loop)
 		return;
 	}
 	std::shared_ptr<SoLoud::Wav> wave;
-	std::string wav = m_SoundPath + name + ".wav";
+	std::string wav = m_SoundPath + name;
 	wave = std::make_shared<SoLoud::Wav>();
 	wave->load(wav.c_str()); //load file
 	m_MapWave.insert(std::pair<std::string, std::shared_ptr<SoLoud::Wav>>(name, wave));
@@ -127,7 +127,7 @@ void ResourceManagers::PlaySound(const std::string& name)
 		wave = it->second;
 	}
 	else {
-		std::string wav = m_SoundPath + name + ".wav";
+		std::string wav = m_SoundPath + name;
 		wave = std::make_shared<SoLoud::Wav>();
 		wave->load(wav.c_str()); //load file
 		m_MapWave.insert(std::pair<std::string, std::shared_ptr<SoLoud::Wav>>(name, wave));

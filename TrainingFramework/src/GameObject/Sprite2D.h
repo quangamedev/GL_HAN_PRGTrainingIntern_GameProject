@@ -10,6 +10,7 @@ protected:
 	Vector2			m_Vec2DPos;
 	GLint			m_iHeight;
 	GLint			m_iWidth;
+	GLint			m_CollisionRadius;
 
 public:
 	Sprite2D(std::shared_ptr<Models> model, std::shared_ptr<Shaders> shader, std::shared_ptr<Texture> texture);
@@ -25,7 +26,7 @@ public:
 
 	void		Set2DPosition(GLfloat x, GLfloat y);
 	void		Set2DPosition(Vector2 pos);
-	void		MoveTo2DPosition(GLfloat x, GLfloat y);
+	bool		MoveTo2DPosition(GLfloat x, GLfloat y, float speed, GLfloat deltaTime);
 	void		MoveInDirection2D(Vector2 dir, float speed, GLfloat deltaTime);
 
 	void		Set2DRotation(GLfloat z);
@@ -35,6 +36,8 @@ public:
 
 	Vector2		Get2DPosition();
 	void		SetSize(GLint width, GLint height);
+
+	GLfloat		GetCollisionRadius();
 
 };
 

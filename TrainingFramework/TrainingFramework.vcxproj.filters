@@ -84,6 +84,9 @@
     <ClCompile Include="src\GameObject\Gun.cpp">
       <Filter>TrainingFramework\src\GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="src\Collisions.cpp">
+      <Filter>TrainingFramework\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Application.h">
@@ -157,6 +160,9 @@
     </ClInclude>
     <ClInclude Include="src\GameObject\Gun.h">
       <Filter>TrainingFramework\src\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Collisions.h">
+      <Filter>TrainingFramework\src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

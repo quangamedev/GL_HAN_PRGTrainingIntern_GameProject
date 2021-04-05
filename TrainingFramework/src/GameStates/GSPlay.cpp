@@ -12,6 +12,7 @@
 #include "Sprite2DAnimated.h"
 #include "Player.h"
 #include "Gun.h"
+#include "Collisions.h"
 
 extern int screenWidth; //need get on Graphic engine
 extern int screenHeight; //need get on Graphic engine
@@ -159,6 +160,16 @@ void GSPlay::Update(float deltaTime)
 	m_Gun->Update(deltaTime);
 
 	m_Gun->Set2DPosition(m_Player->Get2DPosition());
+
+	for (auto it : m_Gun->GetBulletsList())
+	{
+		
+		if (Collisions::GetInstance()->Circle(it, m_Player)) {
+			
+		}
+
+		
+	}
 }
 
 void GSPlay::Draw()
