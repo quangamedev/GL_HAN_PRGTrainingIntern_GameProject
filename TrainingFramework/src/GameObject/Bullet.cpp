@@ -4,16 +4,28 @@ Bullet::Bullet(std::shared_ptr<Models> model, std::shared_ptr<Shaders> shader, s
 {
 	m_TarX = tarX;
 	m_TarY = tarY;
+	m_BulletSpeed = 400.0f;
+	///std::cout << "x: " << tarX << "y: " << tarY << std::endl;
+	m_MovementDirection = Vector2(0, 0);
 }
 
 Bullet::~Bullet()
 {
 }
 
+void Bullet::SetMovementDirection(GLfloat x, GLfloat y)
+{
+	m_MovementDirection = Vector2(x, y);
+}
+
 void Bullet::Update(GLfloat deltaTime)
 {
-	MoveInDirection2D(m_TarX, m_TarY, 100.0f, deltaTime);
-	std::cout << Get2DPosition().x << std::endl;
+	//move to where the play aims
+	MoveInDirection2D(m_MovementDirection, m_BulletSpeed, deltaTime);
+
+	//spins around
+	Set2DRotation(GetZRotation() + 500 * deltaTime);
+	//std::cout << Get2DPosition().x << std::endl;
 }
 
 

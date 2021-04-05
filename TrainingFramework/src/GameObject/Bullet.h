@@ -7,11 +7,14 @@ public:
     Bullet(std::shared_ptr<Models> model, std::shared_ptr<Shaders> shader, std::shared_ptr<Texture> texture, GLfloat tarX, GLfloat tarY);
     ~Bullet();
 
+    void SetMovementDirection(GLfloat x, GLfloat y);
+
     void Update(GLfloat deltaTime) override;
-    void SetMovementDirection2D(GLfloat x, GLfloat y);
 
 private:
     GLfloat m_TarX;
     GLfloat m_TarY;
+    GLfloat m_BulletSpeed;
+    Vector2 m_MovementDirection;
 };
 

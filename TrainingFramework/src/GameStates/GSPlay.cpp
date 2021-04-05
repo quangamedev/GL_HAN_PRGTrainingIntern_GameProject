@@ -144,6 +144,7 @@ void GSPlay::HandleTouchEvents(int x, int y, bool bIsPressed)
 		if ((it)->IsHandle()) break;
 	}
 
+	if(bIsPressed)
 	m_Gun->Fire(x,y);
 }
 
@@ -155,6 +156,7 @@ void GSPlay::Update(float deltaTime)
 	}
 
 	m_Player->Update(deltaTime);
+	m_Gun->Update(deltaTime);
 
 	m_Gun->Set2DPosition(m_Player->Get2DPosition());
 }
