@@ -90,6 +90,10 @@
 #define KEY_MOVE_RIGHT			68	// key d
 #define KEY_MOVE_FORWARD		87	// key w
 #define KEY_MOVE_BACKWARD		83	// key s
+#define MOVE_UP					1
+#define MOVE_RIGHT				1<<1
+#define MOVE_DOWN				1<<2
+#define MOVE_LEFT				1<<3
 
 #elif ANDROID
 

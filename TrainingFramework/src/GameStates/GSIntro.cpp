@@ -28,7 +28,7 @@ void GSIntro::Init()
 	m_logo->Set2DPosition(screenWidth / 2, screenHeight / 2);
 	m_logo->SetSize(150, 150);
 
-	ResourceManagers::GetInstance()->PlaySound("Ludum Dare 38 - Track 9.wav");
+	ResourceManagers::GetInstance()->PlaySound("Ludum Dare 38 - Track 9.wav", true);
 }
 
 void GSIntro::Exit()

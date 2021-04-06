@@ -33,6 +33,7 @@ public:
 	void SetNewPostionForBullet();
 
 private:
+	int m_Key;
 
 	std::shared_ptr<Sprite2D> m_BackgroundWall;
 	std::shared_ptr<Sprite2D> m_BackgroundMap;

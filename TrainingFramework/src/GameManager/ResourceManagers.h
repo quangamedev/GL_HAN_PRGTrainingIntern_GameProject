@@ -22,7 +22,7 @@ public:
 	void AddModel(const std::string& name);
 	void AddTexture(const std::string& name);
 	void AddFont(const std::string& name);
-	void AddSound(const std::string& name, bool loop = false); //sounds
+	void AddSound(const std::string& name); //sounds
 
 	void RemoveShader(const std::string& name);
 	void RemoveModel(const std::string& name);
@@ -30,7 +30,7 @@ public:
 	void RemoveFont(const std::string& name);
 
 	//sounds
-	void PlaySound(const std::string& name);
+	void PlaySound(const std::string& name, bool loop = false);
 	void StopSound(const std::string& name);
 	
 	std::shared_ptr<Shaders> GetShader(const std::string& name);
@@ -45,7 +45,7 @@ private:
 	std::map<std::string, std::shared_ptr<SoLoud::Wav>> m_MapWave;
 
 	//sounds
-	std::shared_ptr<SoLoud::Soloud> m_Soloud; //engine core
+	SoLoud::Soloud m_Soloud; //engine core
 
 	std::string m_SoundPath;
 	std::string m_ShaderPath;

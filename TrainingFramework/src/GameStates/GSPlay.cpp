@@ -22,6 +22,7 @@ extern PlayerState m_State;
 
 GSPlay::GSPlay()
 {
+	m_Key = 0;
 }
 
 
@@ -104,35 +105,34 @@ void GSPlay::HandleEvents()
 
 void GSPlay::HandleKeyEvents(int key, bool bIsPressed)
 {
-	float keyUpDelay = 0.2f;
-	float lastKeyUpTime = 0.0f;
-
-	//player movement
 	switch (key)
 	{
 	case KEY_MOVE_RIGHT:
-		m_Player->SetMovementDirection(1, m_Player->GetMovementDirection().y);
-		m_Player->ChangeState(Player::run);
+		if (bIsPressed)
+			m_Key |= MOVE_RIGHT;
+		else
+			m_Key ^= MOVE_RIGHT;
 		break;
 	case KEY_MOVE_LEFT:
-		m_Player->SetMovementDirection(-1, m_Player->GetMovementDirection().y);
-		m_Player->ChangeState(Player::run);
+		if (bIsPressed)
+			m_Key |= MOVE_LEFT;
+		else
+			m_Key ^= MOVE_LEFT;
 		break;
 	case KEY_MOVE_FORWARD:
-		m_Player->SetMovementDirection(m_Player->GetMovementDirection().x, -1);
-		m_Player->ChangeState(Player::run);
+		if (bIsPressed)
+			m_Key |= MOVE_UP;
+		else
+			m_Key ^= MOVE_UP;
 		break;
 	case KEY_MOVE_BACKWARD:
-		m_Player->SetMovementDirection(m_Player->GetMovementDirection().x, 1);
-		m_Player->ChangeState(Player::run);
+		if (bIsPressed)
+			m_Key |= MOVE_DOWN;
+		else
+			m_Key ^= MOVE_DOWN;
 		break;
 	default:
 		break;
-	}
-
-	if (!bIsPressed) {
-		m_Player->SetMovementDirection(0, 0);
-		m_Player->ChangeState(Player::idle);
 	}
 
 }
@@ -170,6 +170,33 @@ void GSPlay::Update(float deltaTime)
 
 		
 	}
+
+#pragma region PlayerMovement
+
+	m_Player->SetMovementDirection(0, 0);
+	if (!m_Key) {
+		m_Player->SetMovementDirection(0, 0);
+		m_Player->ChangeState(Player::idle);
+	}
+	else {
+		m_Player->ChangeState(Player::run);
+	}
+
+	if (m_Key & MOVE_LEFT) {
+		m_Player->SetMovementDirection(-1, m_Player->GetMovementDirection().y);
+	}
+	if (m_Key & MOVE_RIGHT) {
+		m_Player->SetMovementDirection(1, m_Player->GetMovementDirection().y);
+	}
+	if (m_Key & MOVE_UP) {
+		m_Player->SetMovementDirection(m_Player->GetMovementDirection().x, -1);
+	}
+	if (m_Key & MOVE_DOWN) {
+		m_Player->SetMovementDirection(m_Player->GetMovementDirection().x, 1);
+	}
+
+#pragma endregion
+
 }
 
 void GSPlay::Draw()
