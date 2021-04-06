@@ -33,8 +33,9 @@ public:
 
     void ChangeState(PlayerState state);
 
-    void Update(GLfloat deltatime) override;
-    void Move(GLfloat deltaTime);
+    void Update(GLfloat deltaTime) override;
+
+    void MovementInputHandling(int key);
 
     //void SetIsMoving
 };

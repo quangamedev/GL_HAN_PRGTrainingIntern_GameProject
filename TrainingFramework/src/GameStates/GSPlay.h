@@ -8,6 +8,7 @@ class Text;
 class GameButton;
 class Player;
 class Gun;
+class Enemy;
 
 class GSPlay :
 	public GameStateBase
@@ -40,6 +41,7 @@ private:
 	std::shared_ptr<Text>  m_Score;
 	std::shared_ptr<Player> m_Player;
 	std::shared_ptr<Gun> m_Gun;
+	std::shared_ptr<Enemy> m_Dummy;
 
 	std::list<std::shared_ptr<GameButton>>	m_listButton;
 

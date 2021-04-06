@@ -15,6 +15,7 @@ public:
     ~Sprite2DAnimated();
 
     void Draw() override;
-    void Update(GLfloat deltatime) override;
+    void Update(GLfloat deltaTime) override;
+    virtual void RunAnimation(GLfloat deltaTime, float firstFrame, float lastFrame);
 };
 

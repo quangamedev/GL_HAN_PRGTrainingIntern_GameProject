@@ -109,3 +109,26 @@ void Sprite2DAnimated::Update(GLfloat deltatime)
 	}
 
 }
+
+void Sprite2DAnimated::RunAnimation(GLfloat deltatime, float firstFrame, float lastFrame)
+{
+	if (firstFrame != lastFrame) {
+		m_currentTime += deltatime;
+
+		if (m_currentTime >= m_frameTime) {
+
+			if (m_currentFrame >= lastFrame) {
+				m_currentFrame = firstFrame;
+			}
+			else
+			{
+				m_currentFrame++;
+			}
+
+			m_currentTime -= m_frameTime;
+		}
+	}
+	else {
+		m_currentFrame = firstFrame;
+	}
+}

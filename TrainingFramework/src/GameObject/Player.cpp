@@ -43,23 +43,10 @@ void Player::ChangeState(PlayerState state)
 	}
 }
 
-void Player::Update(GLfloat deltatime)
+void Player::Update(GLfloat deltaTime)
 {
 	//std::cout << m_currentFrame << std::endl;
-	m_currentTime += deltatime;
-
-	if (m_currentTime >= m_frameTime) {
-
-		if (m_currentFrame >= m_LastFrame) {
-			m_currentFrame = m_FirstFrame;
-		}
-		else
-		{
-			m_currentFrame++;
-		}
-
-		m_currentTime -= m_frameTime;	
-	}
+	RunAnimation(deltaTime, m_FirstFrame, m_LastFrame);
 
 	if (m_MovementDir.x < 0 && m_iWidth > 0) {
 		SetSize(-m_iWidth, m_iHeight);
@@ -68,10 +55,30 @@ void Player::Update(GLfloat deltatime)
 		SetSize(-m_iWidth, m_iHeight);
 	}
 
-	Move(deltatime);
+	MoveInDirection2D(m_MovementDir, m_Speed, deltaTime);
 }
 
-void Player::Move(GLfloat deltaTime)
+void Player::MovementInputHandling(int key)
 {
-	MoveInDirection2D(m_MovementDir, m_Speed, deltaTime);
+	SetMovementDirection(0, 0);
+	if (!key) {
+		SetMovementDirection(0, 0);
+		ChangeState(idle);
+	}
+	else {
+		ChangeState(run);
+	}
+
+	if (key & MOVE_LEFT) {
+		SetMovementDirection(-1, GetMovementDirection().y);
+	}
+	if (key & MOVE_RIGHT) {
+		SetMovementDirection(1, GetMovementDirection().y);
+	}
+	if (key & MOVE_UP) {
+		SetMovementDirection(GetMovementDirection().x, -1);
+	}
+	if (key & MOVE_DOWN) {
+		SetMovementDirection(GetMovementDirection().x, 1);
+	}
 }

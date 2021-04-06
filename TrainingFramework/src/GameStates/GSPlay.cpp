@@ -12,13 +12,14 @@
 #include "Sprite2DAnimated.h"
 #include "Player.h"
 #include "Gun.h"
+#include "Enemy.h"
 #include "Collisions.h"
 
 extern int screenWidth; //need get on Graphic engine
 extern int screenHeight; //need get on Graphic engine
 
-extern enum PlayerState;
-extern PlayerState m_State;
+//extern enum PlayerState;
+//extern PlayerState m_State;
 
 GSPlay::GSPlay()
 {
@@ -68,6 +69,12 @@ void GSPlay::Init()
 	m_Player->Set2DPosition(m_BackgroundMap->Get2DPosition());
 	m_Player->SetSize(70, 70);
 
+	//enemy
+	texture = ResourceManagers::GetInstance()->GetTexture("sEnemyAll_strip8");
+	m_Dummy = std::make_shared<Enemy>(model, shader, texture, 8, 0.1, m_Player);
+	m_Dummy->Set2DPosition(m_BackgroundMap->Get2DPosition() + Vector2(20, 20));
+
+	//gun
 	texture = ResourceManagers::GetInstance()->GetTexture("sGunPivoted");
 	shader = ResourceManagers::GetInstance()->GetShader("TextureShader");
 	m_Gun = std::make_shared<Gun>(model, shader, texture);
@@ -157,6 +164,7 @@ void GSPlay::Update(float deltaTime)
 	}
 
 	m_Player->Update(deltaTime);
+	m_Dummy->Update(deltaTime);
 	m_Gun->Update(deltaTime);
 
 	m_Gun->Set2DPosition(m_Player->Get2DPosition());
@@ -167,35 +175,15 @@ void GSPlay::Update(float deltaTime)
 		if (Collisions::GetInstance()->Circle(it, m_Player)) {
 			
 		}
-
+		if (Collisions::GetInstance()->Circle(it, m_Dummy)) {
+			m_Dummy->ChangeState(Enemy::dead);
+		}
 		
 	}
 
-#pragma region PlayerMovement
 
-	m_Player->SetMovementDirection(0, 0);
-	if (!m_Key) {
-		m_Player->SetMovementDirection(0, 0);
-		m_Player->ChangeState(Player::idle);
-	}
-	else {
-		m_Player->ChangeState(Player::run);
-	}
+	m_Player->MovementInputHandling(m_Key);
 
-	if (m_Key & MOVE_LEFT) {
-		m_Player->SetMovementDirection(-1, m_Player->GetMovementDirection().y);
-	}
-	if (m_Key & MOVE_RIGHT) {
-		m_Player->SetMovementDirection(1, m_Player->GetMovementDirection().y);
-	}
-	if (m_Key & MOVE_UP) {
-		m_Player->SetMovementDirection(m_Player->GetMovementDirection().x, -1);
-	}
-	if (m_Key & MOVE_DOWN) {
-		m_Player->SetMovementDirection(m_Player->GetMovementDirection().x, 1);
-	}
-
-#pragma endregion
 
 }
 
@@ -209,6 +197,7 @@ void GSPlay::Draw()
 	}
 	m_Gun->Draw();
 	m_Player->Draw();
+	m_Dummy->Draw();
 	//m_Score->Draw();
 }
 
