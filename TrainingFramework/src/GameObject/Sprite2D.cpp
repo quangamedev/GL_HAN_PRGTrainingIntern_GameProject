@@ -168,10 +168,20 @@ bool Sprite2D::MoveTo2DPosition(GLfloat x, GLfloat y, float speed, GLfloat delta
 	if (Get2DPosition().x - x == 0 && Get2DPosition().y - y == 0)
 		return true;
 	
-	Vector2 tempDir = Vector2(x, y).Normalize();
+	Vector2 tempDir = (Vector2(x,y) - Get2DPosition()).Normalize();
 	Set2DPosition(Get2DPosition().x + tempDir.x * speed * deltaTime, Get2DPosition().y + tempDir.y * speed * deltaTime);
 	return false;
 	
+}
+
+bool Sprite2D::MoveTo2DPosition(Vector2 pos, float speed, GLfloat deltaTime)
+{
+	if (Get2DPosition().x - pos.x == 0 && Get2DPosition().y - pos.y == 0)
+		return true;
+
+	Vector2 tempDir = (pos - Get2DPosition()).Normalize();
+	Set2DPosition(Get2DPosition().x + tempDir.x * speed * deltaTime, Get2DPosition().y + tempDir.y * speed * deltaTime);
+	return false;
 }
 
 void Sprite2D::MoveInDirection2D(Vector2 dir, float speed, GLfloat deltaTime)

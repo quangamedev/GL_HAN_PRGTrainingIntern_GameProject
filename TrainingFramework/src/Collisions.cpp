@@ -19,5 +19,4 @@ bool Collisions::Circle(std::shared_ptr<Sprite2D> obj1, std::shared_ptr<Sprite2D
 	double combinedDistance = obj1Radius + obj2Radius;
 
 	return distance < combinedDistance;
-	return false;
 }

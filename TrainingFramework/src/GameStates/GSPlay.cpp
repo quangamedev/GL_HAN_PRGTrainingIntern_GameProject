@@ -42,19 +42,25 @@ void GSPlay::Init()
 	auto shader = ResourceManagers::GetInstance()->GetShader("TextureShader");
 	m_BackgroundWall = std::make_shared<Sprite2D>(model, shader, texture);
 	m_BackgroundWall->Set2DPosition(screenWidth / 2, screenHeight / 2);
-	m_BackgroundWall->SetSize(screenWidth, screenWidth);
+	m_BackgroundWall->SetSize(screenWidth - 100, screenWidth - 100);
+
+	//Background
+	texture = ResourceManagers::GetInstance()->GetTexture("sBg");
+	m_Background = std::make_shared<Sprite2D>(model, shader, texture);
+	m_Background->Set2DPosition(screenWidth / 2, screenHeight / 2);
+	m_Background->SetSize(screenWidth * 2, screenWidth * 2);
 
 	//Background Map
 	texture = ResourceManagers::GetInstance()->GetTexture("sMap");
 	m_BackgroundMap = std::make_shared<Sprite2D>(model, shader, texture);
 	m_BackgroundMap->Set2DPosition(screenWidth / 2, screenHeight / 2);
-	m_BackgroundMap->SetSize(screenWidth, screenWidth);
+	m_BackgroundMap->SetSize(screenWidth - 100, screenWidth - 100);
 
 	//back button
 	texture = ResourceManagers::GetInstance()->GetTexture("button_back");
 	std::shared_ptr<GameButton> button = std::make_shared<GameButton>(model, shader, texture);
-	button->Set2DPosition(50, 50);
-	button->SetSize(100, 100);
+	button->Set2DPosition(40, 40);
+	button->SetSize(70, 70);
 	button->SetOnClick([]() {
 		GameStateMachine::GetInstance()->PopState();
 		GameStateMachine::GetInstance()->ChangeState(StateTypes::STATE_Menu);
@@ -69,17 +75,18 @@ void GSPlay::Init()
 	m_Player->Set2DPosition(m_BackgroundMap->Get2DPosition());
 	m_Player->SetSize(70, 70);
 
-	//enemy
-	texture = ResourceManagers::GetInstance()->GetTexture("sEnemyAll_strip8");
-	m_Dummy = std::make_shared<Enemy>(model, shader, texture, 8, 0.1, m_Player);
-	m_Dummy->Set2DPosition(m_BackgroundMap->Get2DPosition() + Vector2(20, 20));
-
 	//gun
 	texture = ResourceManagers::GetInstance()->GetTexture("sGunPivoted");
 	shader = ResourceManagers::GetInstance()->GetShader("TextureShader");
 	m_Gun = std::make_shared<Gun>(model, shader, texture);
 	m_Gun->Set2DPosition(m_BackgroundMap->Get2DPosition());
 	m_Gun->SetSize(160, 40);
+
+	//enemy
+	shader = ResourceManagers::GetInstance()->GetShader("AnimationShader");
+	texture = ResourceManagers::GetInstance()->GetTexture("sEnemyAll_strip9");
+	m_Dummy = std::make_shared<Enemy>(model, shader, texture, 9, 0.1, m_Player, m_Gun);
+	m_Dummy->Set2DPosition(m_BackgroundMap->Get2DPosition() + Vector2(20, 20));
 
 	//text game title
 	shader = ResourceManagers::GetInstance()->GetShader("TextShader");
@@ -154,6 +161,8 @@ void GSPlay::HandleTouchEvents(int x, int y, bool bIsPressed)
 
 	if(bIsPressed)
 	m_Gun->Fire(x,y);
+
+	std::cout << x << " " << y << std::endl;
 }
 
 void GSPlay::Update(float deltaTime)
@@ -176,7 +185,14 @@ void GSPlay::Update(float deltaTime)
 			
 		}
 		if (Collisions::GetInstance()->Circle(it, m_Dummy)) {
-			m_Dummy->ChangeState(Enemy::dead);
+			if (m_Dummy->GetState() == Enemy::rest) {
+
+				m_Dummy->ChangeState(Enemy::dead);
+			}
+			else
+				m_Dummy->ChangeState(Enemy::rest);
+
+			
 		}
 		
 	}
@@ -189,6 +205,7 @@ void GSPlay::Update(float deltaTime)
 
 void GSPlay::Draw()
 {
+	m_Background->Draw();
 	m_BackgroundMap->Draw();
 	m_BackgroundWall->Draw();
 	for (auto it : m_listButton)

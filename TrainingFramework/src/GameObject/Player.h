@@ -2,17 +2,7 @@
 #include "Sprite2DAnimated.h"
 class Player :
     public Sprite2DAnimated
-{
-private:
-    int m_Health;
-    int m_Speed;
-    int m_Score;
-    Vector2 m_MovementDir;
-    int m_FirstFrame;
-    int m_LastFrame;
-
-    
-    
+{  
 public:
     enum PlayerState
     {
@@ -25,6 +15,7 @@ public:
     Player(std::shared_ptr<Models> model, std::shared_ptr<Shaders> shader, std::shared_ptr<Texture> texture, float numFrames, float frameTime);
     ~Player();
 
+    void ReduceHealth(int amount);
     int GetHealth() { return m_Health; }
     int GetScore() { return m_Score; }
     Vector2 GetMovementDirection() { return m_MovementDir; }
@@ -38,5 +29,18 @@ public:
     void MovementInputHandling(int key);
 
     //void SetIsMoving
+
+private:
+    int m_Health;
+    int m_Speed;
+    int m_Score;
+    Vector2 m_MovementDir;
+    int m_FirstFrame;
+    int m_LastFrame;
+
+    float m_InvulnerableDuration;
+    float m_InvulnerableTime;
+    bool m_isInvulnerable;
+
 };
 

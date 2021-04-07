@@ -28,6 +28,9 @@ private:
 
     std::list<std::shared_ptr<Bullet>> m_listBullet;
 
-    float recoilRange;
+    float m_RecoilRange;
+    float m_FireRate;
+    float m_FireTime;
+    bool m_CanFire;
 };
 

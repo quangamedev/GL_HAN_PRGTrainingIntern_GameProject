@@ -27,6 +27,7 @@ public:
 	void		Set2DPosition(GLfloat x, GLfloat y);
 	void		Set2DPosition(Vector2 pos);
 	bool		MoveTo2DPosition(GLfloat x, GLfloat y, float speed, GLfloat deltaTime);
+	bool		MoveTo2DPosition(Vector2 pos, float speed, GLfloat deltaTime);
 	void		MoveInDirection2D(Vector2 dir, float speed, GLfloat deltaTime);
 
 	void		Set2DRotation(GLfloat z);

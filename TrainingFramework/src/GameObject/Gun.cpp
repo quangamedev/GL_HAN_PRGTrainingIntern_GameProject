@@ -5,9 +5,12 @@ Gun::Gun(std::shared_ptr<Models> model, std::shared_ptr<Shaders> shader, std::sh
 	m_Model = ResourceManagers::GetInstance()->GetModel("Sprite2D");
 	m_Shader = ResourceManagers::GetInstance()->GetShader("TextureShader");
 	m_Texture = ResourceManagers::GetInstance()->GetTexture("sBullet");
-	recoilRange = 0.5;
+	m_RecoilRange = 0.5;
+	m_FireRate = 0.2;
+	m_FireTime = 0;
 	//init randomness
 	srand(time(NULL));
+	m_CanFire = true;
 }
 
 Gun::~Gun()
@@ -19,6 +22,14 @@ void Gun::Update(GLfloat deltaTime)
 	for (auto it : m_listBullet)
 	{
 		it->Update(deltaTime);
+	}
+
+	
+	m_FireTime += deltaTime;
+
+	if (m_FireTime > m_FireRate) {
+		m_CanFire = true;
+		m_FireTime = 0;
 	}
 }
 
@@ -33,24 +44,29 @@ void Gun::Draw()
 
 void Gun::Fire(GLfloat x, GLfloat y)
 {
-	//random vector
-	float randX = -recoilRange/2 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (recoilRange/2 + recoilRange / 2)));
-	float randY = -recoilRange/2 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (recoilRange/2 + recoilRange / 2)));
-	
-	//bullets directional vector
-	Vector2 tempDir = Vector2(x - Get2DPosition().x, y - Get2DPosition().y).Normalize();
-	
-	//make gun look at aim
-	LookAt2D(x, y);
+	if (m_CanFire) {
 
-	//spawn bullet
-	std::shared_ptr<Bullet> b = std::make_shared<Bullet>(m_Model, m_Shader, m_Texture, x, y);
+		//random vector
+		float randX = -m_RecoilRange / 2 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (m_RecoilRange / 2 + m_RecoilRange / 2)));
+		float randY = -m_RecoilRange / 2 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (m_RecoilRange / 2 + m_RecoilRange / 2)));
 
-	//set position to be at the end of the gun 50 is the aprrox. length of the gun
-	b->Set2DPosition(Get2DPosition() + tempDir * 60.0f);
-	b->SetSize(40, 30);
-	b->SetMovementDirection(tempDir.x + randX, tempDir.y + randY);
-	m_listBullet.push_back(b);
-	
-	ResourceManagers::GetInstance()->PlaySound("aBullet.wav");
+		//bullets directional vector
+		Vector2 tempDir = Vector2(x - Get2DPosition().x, y - Get2DPosition().y).Normalize();
+
+		//make gun look at aim
+		LookAt2D(x, y);
+
+		//spawn bullet
+		std::shared_ptr<Bullet> b = std::make_shared<Bullet>(m_Model, m_Shader, m_Texture, x, y);
+
+		//set position to be at the end of the gun 50 is the aprrox. length of the gun
+		b->Set2DPosition(Get2DPosition() + tempDir * 70.0f);
+		b->SetSize(40, 30);
+		b->SetMovementDirection(tempDir.x + randX, tempDir.y + randY);
+		m_listBullet.push_back(b);
+
+		ResourceManagers::GetInstance()->PlaySound("aBullet.wav");
+
+		m_CanFire = false;
+	}
 }

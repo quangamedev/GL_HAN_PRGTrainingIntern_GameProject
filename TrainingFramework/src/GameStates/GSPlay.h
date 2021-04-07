@@ -36,6 +36,7 @@ public:
 private:
 	int m_Key;
 
+	std::shared_ptr<Sprite2D> m_Background;
 	std::shared_ptr<Sprite2D> m_BackgroundWall;
 	std::shared_ptr<Sprite2D> m_BackgroundMap;
 	std::shared_ptr<Text>  m_Score;

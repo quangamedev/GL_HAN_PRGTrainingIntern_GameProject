@@ -10,5 +10,6 @@ public:
 	Collisions();
 	~Collisions();
 	bool Circle(std::shared_ptr<Sprite2D> obj1, std::shared_ptr<Sprite2D> obj2);
+	//bool Circle(std::shared_ptr<Sprite2D> obj1, &obj2);
 };
 
