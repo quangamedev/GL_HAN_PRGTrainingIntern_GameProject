@@ -6,8 +6,8 @@ extern int screenHeight; //need get on Graphic engine
 Player::Player(std::shared_ptr<Models> model, std::shared_ptr<Shaders> shader, std::shared_ptr<Texture> texture, float numFrames, float frameTime) : Sprite2DAnimated (model, shader, texture, numFrames, frameTime)
 {
 	m_Health = 3;
-	m_Speed = 100;
-	m_Score = 0;
+	m_Speed = 150;
+	m_KillCount = 0;
 	m_MovementDir = Vector2(0, 0);
 	m_FirstFrame = 0;
 	m_LastFrame = numFrames - 1;

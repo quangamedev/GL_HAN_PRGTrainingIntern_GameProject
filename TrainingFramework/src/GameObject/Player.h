@@ -17,7 +17,8 @@ public:
 
     void ReduceHealth(int amount);
     int GetHealth() { return m_Health; }
-    int GetScore() { return m_Score; }
+    int GetKillCount() { return m_KillCount; }
+    void IncreaseKillCount() { m_KillCount++; }
     Vector2 GetMovementDirection() { return m_MovementDir; }
 
     void SetMovementDirection(GLfloat x, GLfloat y);
@@ -33,7 +34,7 @@ public:
 private:
     int m_Health;
     int m_Speed;
-    int m_Score;
+    int m_KillCount;
     Vector2 m_MovementDir;
     int m_FirstFrame;
     int m_LastFrame;

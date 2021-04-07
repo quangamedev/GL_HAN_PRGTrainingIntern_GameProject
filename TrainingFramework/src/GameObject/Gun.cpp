@@ -5,8 +5,8 @@ Gun::Gun(std::shared_ptr<Models> model, std::shared_ptr<Shaders> shader, std::sh
 	m_Model = ResourceManagers::GetInstance()->GetModel("Sprite2D");
 	m_Shader = ResourceManagers::GetInstance()->GetShader("TextureShader");
 	m_Texture = ResourceManagers::GetInstance()->GetTexture("sBullet");
-	m_RecoilRange = 0.5;
-	m_FireRate = 0.2;
+	m_RecoilRange = 0.7;
+	m_FireRate = 0.3;
 	m_FireTime = 0;
 	//init randomness
 	srand(time(NULL));
@@ -57,8 +57,8 @@ void Gun::Fire(GLfloat x, GLfloat y)
 		LookAt2D(x, y);
 
 		//spawn bullet
-		std::shared_ptr<Bullet> b = std::make_shared<Bullet>(m_Model, m_Shader, m_Texture, x, y);
-
+		std::shared_ptr<Bullet> b = std::make_shared<Bullet>(m_Model, m_Shader, m_Texture);
+		//b->Init(tempDir, Vector2(randX, randY));
 		//set position to be at the end of the gun 50 is the aprrox. length of the gun
 		b->Set2DPosition(Get2DPosition() + tempDir * 70.0f);
 		b->SetSize(40, 30);
@@ -69,4 +69,6 @@ void Gun::Fire(GLfloat x, GLfloat y)
 
 		m_CanFire = false;
 	}
+
+	//std::sha
 }

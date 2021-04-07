@@ -3,6 +3,9 @@
 #include "Player.h"
 #include "Collisions.h"
 #include "Gun.h"
+//random
+#include <stdlib.h>
+#include <time.h>  
 
 class Enemy :
     public Sprite2DAnimated
@@ -25,6 +28,9 @@ public:
     void ChangeState(EnemyState state);
     EnemyState GetState() { return m_State; }
     GLfloat GetDistance(Vector2 pos1, Vector2 pos2);
+
+    bool IsActive() { return m_IsActive; }
+    void Reset();
 
 private:
 

@@ -14,6 +14,8 @@
 #include "Gun.h"
 #include "Enemy.h"
 #include "Collisions.h"
+#include <stdlib.h>
+#include <time.h>  
 
 extern int screenWidth; //need get on Graphic engine
 extern int screenHeight; //need get on Graphic engine
@@ -24,6 +26,9 @@ extern int screenHeight; //need get on Graphic engine
 GSPlay::GSPlay()
 {
 	m_Key = 0;
+	m_TimeSinceLastSpawn = 0;
+	m_SpawnInterval = 1.5;
+	m_GameIsOver = false;
 }
 
 
@@ -82,17 +87,23 @@ void GSPlay::Init()
 	m_Gun->Set2DPosition(m_BackgroundMap->Get2DPosition());
 	m_Gun->SetSize(160, 40);
 
-	//enemy
-	shader = ResourceManagers::GetInstance()->GetShader("AnimationShader");
-	texture = ResourceManagers::GetInstance()->GetTexture("sEnemyAll_strip9");
-	m_Dummy = std::make_shared<Enemy>(model, shader, texture, 9, 0.1, m_Player, m_Gun);
-	m_Dummy->Set2DPosition(m_BackgroundMap->Get2DPosition() + Vector2(20, 20));
+	m_EnemyModel = ResourceManagers::GetInstance()->GetModel("Sprite2D");
+	m_EnemyShader = ResourceManagers::GetInstance()->GetShader("AnimationShader");
+	m_EnemyTexture = ResourceManagers::GetInstance()->GetTexture("sEnemyAll_strip9");
 
-	//text game title
+	//score
 	shader = ResourceManagers::GetInstance()->GetShader("TextShader");
-	std::shared_ptr<Font> font = ResourceManagers::GetInstance()->GetFont("arialbd");
-	m_Score = std::make_shared< Text>(shader, font, "score: 10", TEXT_COLOR::RED, 1.0);
-	m_Score->Set2DPosition(Vector2(5, 25));
+	std::shared_ptr<Font> font = ResourceManagers::GetInstance()->GetFont("friendlyscribbles");
+	m_ScoreText = std::make_shared< Text>(shader, font, "score: " + m_Player->GetKillCount(), TEXT_COLOR::WHITE, 1.0);
+	m_ScoreText->Set2DPosition(Vector2(600, 50));
+
+	m_LivesText = std::make_shared< Text>(shader, font, "Live(s): " + m_Player->GetKillCount(), TEXT_COLOR::WHITE, 1.0);
+	m_LivesText->Set2DPosition(Vector2(450, 50));
+
+	m_GameOverText = std::make_shared< Text>(shader, font, "GAME OVER", TEXT_COLOR::WHITE, 5.0);
+	m_GameOverText->Set2DPosition(screenWidth, screenHeight / 2);
+
+	srand(time(NULL));
 }
 
 void GSPlay::Exit()
@@ -162,7 +173,7 @@ void GSPlay::HandleTouchEvents(int x, int y, bool bIsPressed)
 	if(bIsPressed)
 	m_Gun->Fire(x,y);
 
-	std::cout << x << " " << y << std::endl;
+	//std::cout << x << " " << y << std::endl;
 }
 
 void GSPlay::Update(float deltaTime)
@@ -171,36 +182,33 @@ void GSPlay::Update(float deltaTime)
 	{
 		it->Update(deltaTime);
 	}
+	
+	if (!m_GameIsOver) {
+		m_Player->Update(deltaTime);
+		m_Gun->Update(deltaTime);
 
-	m_Player->Update(deltaTime);
-	m_Dummy->Update(deltaTime);
-	m_Gun->Update(deltaTime);
+		m_Gun->Set2DPosition(m_Player->Get2DPosition());
 
-	m_Gun->Set2DPosition(m_Player->Get2DPosition());
-
-	for (auto it : m_Gun->GetBulletsList())
-	{
-		
-		if (Collisions::GetInstance()->Circle(it, m_Player)) {
-			
+		for (auto it : m_listEnemy)
+		{
+			if (it->IsActive())
+				it->Update(deltaTime);
 		}
-		if (Collisions::GetInstance()->Circle(it, m_Dummy)) {
-			if (m_Dummy->GetState() == Enemy::rest) {
 
-				m_Dummy->ChangeState(Enemy::dead);
-			}
-			else
-				m_Dummy->ChangeState(Enemy::rest);
+		SpawnEnemies(deltaTime);
+		m_Player->MovementInputHandling(m_Key);
 
-			
+		m_ScoreText->setText("Kill Count: " + std::to_string(m_Player->GetKillCount()));
+		m_LivesText->setText("Live(s): " + std::to_string(m_Player->GetHealth()));
+
+		if (m_Player->GetHealth() <= 0) {
+			m_GameIsOver = true;
 		}
-		
 	}
+	
+	
 
-
-	m_Player->MovementInputHandling(m_Key);
-
-
+	
 }
 
 void GSPlay::Draw()
@@ -214,10 +222,59 @@ void GSPlay::Draw()
 	}
 	m_Gun->Draw();
 	m_Player->Draw();
-	m_Dummy->Draw();
-	//m_Score->Draw();
+	for (auto it : m_listEnemy)
+	{
+		if(it->IsActive())
+		it->Draw();
+	}
+	m_ScoreText->Draw();
+	m_LivesText->Draw();
+
+	if(m_GameIsOver)
+	m_GameOverText->Draw();
 }
 
-void GSPlay::SetNewPostionForBullet()
+void GSPlay::SpawnEnemies(float deltaTime)
 {
+	m_TimeSinceLastSpawn += deltaTime;
+
+	if (m_TimeSinceLastSpawn >= m_SpawnInterval) {
+		//spawn
+		int randTime = ((rand() % (int)m_SpawnInterval + 2) - m_Player->GetKillCount() / 25);
+		if (randTime < 0.5)
+			randTime += 0.5;
+		m_TimeSinceLastSpawn -= randTime;
+
+		std::shared_ptr<Enemy> e = std::make_shared<Enemy>(m_EnemyModel, m_EnemyShader, m_EnemyTexture, 9, 0.1, m_Player, m_Gun);
+		m_listEnemy.push_back(e);
+
+		int randX = 0;
+		int randY = 0;
+		double distance = 0;
+		int tries = 0;
+		Vector2 randomPos = Vector2(randX, randY);
+
+		do
+		{
+			randX = rand() % 550 + 125;
+			randY = rand() % 550 + 125;
+			randomPos = Vector2(randX, randY);
+
+			Vector2 tempVector = randomPos - m_Player->Get2DPosition();
+			distance = sqrt((tempVector.x * tempVector.x) + (tempVector.y * tempVector.y));
+
+			tries++;
+			
+		} while (distance < 170 || tries > 100);
+		
+		//std::cout << distance << std::endl;
+		//b->Init(tempDir, Vector2(randX, randY));
+		//set position to be at the end of the gun 50 is the aprrox. length of the gun
+		e->Set2DPosition(randomPos);
+		
+	}
+
+	
+
+
 }
