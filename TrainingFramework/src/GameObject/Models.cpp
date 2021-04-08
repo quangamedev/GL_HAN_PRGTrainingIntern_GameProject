@@ -10,7 +10,7 @@ Models::Models(const std::string& fileName, GLuint type)
 		LOGE("ERROR %s \n", fileName);
 		return;
 	}
-	LOGI("Load Models:%s\t\t", fileName);
+	LOGI("Load Models:%s\t\t", fileName.c_str());
 
 	GLuint iNumVertex = 0;
 	Vertex* verticesData;
